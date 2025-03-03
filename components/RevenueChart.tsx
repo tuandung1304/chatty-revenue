@@ -1,13 +1,14 @@
 'use client'
 
 import {
-  CUMULATIVE_TARGET_REVENUE,
-  TARGET_MONTHLY_REVENUE,
   chartLabels,
   chartOptions,
+  CUMULATIVE_TARGET_REVENUE,
+  TARGET_MONTHLY_REVENUE,
 } from '@/constants'
 import { calculateCumulativeSum, removeZeroFromEnd } from '@/utils'
 import { Button, TextField } from '@mui/material'
+import { MonthlyRevenue } from '@prisma/client'
 import {
   BarController,
   BarElement,
@@ -22,7 +23,7 @@ import {
   Title,
   Tooltip,
 } from 'chart.js'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Chart } from 'react-chartjs-2'
 
 ChartJS.register(
@@ -38,11 +39,12 @@ ChartJS.register(
   BarController,
 )
 
-// todo: data from db
-const ACTUAL_MONTHLY_REVENUE = [4967, 4857, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+export default function RevenueChart({ data }: { data: MonthlyRevenue[] }) {
+  const initState = useMemo(() => {
+    return data.map((item) => item.revenue)
+  }, [data])
 
-export default function RevenueChart() {
-  const [monthlyEarned, setMonthlyEarned] = useState(ACTUAL_MONTHLY_REVENUE)
+  const [monthlyEarned, setMonthlyEarned] = useState(initState)
 
   const handleChangeData = (index: number, value: number) => {
     const newMonthlyEarned = [...monthlyEarned]
@@ -51,7 +53,7 @@ export default function RevenueChart() {
   }
 
   const handleReset = () => {
-    setMonthlyEarned(ACTUAL_MONTHLY_REVENUE)
+    setMonthlyEarned(initState)
   }
 
   const cumulativeActualRevenue = calculateCumulativeSum(

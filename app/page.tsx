@@ -1,7 +1,12 @@
-import RevenueChart from '@/components/RevenueChart';
+import RevenueChart from '@/components/RevenueChart'
+import { prisma } from '@/lib/prisma'
 
-export default function Home() {
-  return (
-    <RevenueChart />
-  );
+export default async function Home() {
+  const data = await prisma.monthlyRevenue.findMany({
+    orderBy: {
+      month: 'asc',
+    },
+  })
+
+  return <RevenueChart data={data} />
 }
