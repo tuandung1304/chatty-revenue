@@ -158,9 +158,9 @@ export default function RevenueChart({ data }: Props) {
   }, [input])
 
   return (
-    <div className="flex h-[100vh] p-10 gap-8">
-      <div className="w-32 shrink-0 flex flex-col gap-4 bg-neutral-300 p-3 rounded-lg self-start">
-        <p className="text-sm font-semibold text-gray-950 text-nowrap text-center">
+    <div className="flex h-[100vh] gap-8 p-10">
+      <div className="flex w-32 shrink-0 flex-col gap-4 self-start rounded-lg bg-neutral-300 p-3">
+        <p className="text-nowrap text-center text-sm font-semibold text-gray-950">
           Monthly earned
         </p>
         {chartLabels.map((label, index) => (
